@@ -1,0 +1,13 @@
+<h2><%= @blank_page %> </h2>
+<% if @movie %>
+  <img src="<%= @poster %>">
+<% end %>
+<div>
+  <h2><%= @movie_title %> </h2>
+  <p><%= @movie_title %> <%= @released %></p>
+  <p><%= @director %></p>
+  <p><%= @writer %></p>
+  <p><%= @plot_header %></p>
+  <p><%= @plot %></p>
+</div>
+

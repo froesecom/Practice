@@ -1,0 +1,16 @@
+
+
+<!-- <img src="<%= @poster %>"> -->
+<div id="container">
+  <h2><%= @blank_page %> </h2>
+  <% if @movies && @movies.length %> <!-- this says, if there's a variable @movies AND it has a length, run the code. Nil has no length, so it doesn't run if nothing's passed in. -->
+    <% @movies.each do |movie| %>
+      <p><a href="/titles/<%= movie["Title"]%>"><%= movie["Title"] %></a>
+      </p>
+    <% end %>
+  <% end %>
+<footer>
+  <p>Disclaimer: this site may cause you to be very impressed. Please refrain from driving heavy machinery after viewing it.</p>
+</footer>
+</div>
+
