@@ -21,30 +21,40 @@ end
 
 
 get '/titles/:title' do
-   params[:title]
+
+  #this opens the file and converts the data IN MEMORY (not in the file into a format we can use)
+  #Because of the way the info is stored in the file, you have to convert it to a hash.
    f = File.open("movies.csv", 'r')
-   #something here needs to read the file to check if the thing is there?
-   
-     @movies = {}
-     f.each do |line|
-      movie = JSON(line)
-      @movies[ movie['Title'].downcase ] = movie
+    #this creates and empty hash to store the info in a hash format
+    @movies = {}
+    #this goes through each line of the file and converts it to a hash IN MEMORY, not in the file
+    f.each do |line|
+    movie = JSON(line)
+    #this manipulates that data so the key is the movie name
+    @movies[ movie['Title'].downcase ] = movie
    end
 
-    url = "http://www.omdbapi.com/?t=#{params[:title].gsub(' ', '+')}"
-    response = HTTParty.get(url)
-      f = File.new("movies.csv", 'a+')
-      f.puts(response)
-      f.close
-    @movie = JSON(response)
-    @awards = @movie["Awards"]
-    @director = "Director: #{@movie["Director"]}"
-    @movie_title = @movie["Title"]
-    @plot_header = "Plot"
-    @plot = @movie["Plot"]
-    @poster = @movie['Poster'] 
-    @released = "was released on #{@movie['Released']}."
-    @writer = "Writers: #{@movie["Writer"]}" 
+   @movie = @movies[ params[:title].downcase ]
+
+   # this code only runs if it @movie = nil... in otherwords, it's not in file
+   if @movie == nil
+      url = "http://www.omdbapi.com/?t=#{params[:title].gsub(' ', '+')}"
+      response = HTTParty.get(url)
+      @movie = JSON(response)
+        f = File.new("movies.csv", 'a+')
+        f.puts(response)
+        f.close
+      
+    end
+      @awards = @movie["Awards"]
+      @director = "Director: #{@movie["Director"]}"
+      @movie_title = @movie["Title"]
+      @plot_header = "Plot"
+      @plot = @movie["Plot"]
+      @poster = @movie['Poster'] 
+      @released = "was released on #{@movie['Released']}."
+      @writer = "Writers: #{@movie["Writer"]}"
+    
   
   erb :titles
 end
