@@ -24,11 +24,11 @@ get '/titles/:title' do
 
   #this opens the file and converts the data IN MEMORY (not in the file into a format we can use)
   #Because of the way the info is stored in the file, you have to convert it to a hash.
-   f = File.open("movies.csv", 'r')
-    #this creates and empty hash to store the info in a hash format
-    @movies = {}
-    #this goes through each line of the file and converts it to a hash IN MEMORY, not in the file
-    f.each do |line|
+  f = File.open("movies.csv", 'r')
+  #this creates and empty hash to store the info in a hash format
+  @movies = {}
+  #this goes through each line of the file and converts it to a hash IN MEMORY, not in the file
+  f.each do |line|
     movie = JSON(line)
     #this manipulates that data so the key is the movie name
     @movies[ movie['Title'].downcase ] = movie
@@ -43,9 +43,8 @@ get '/titles/:title' do
       @movie = JSON(response)
         f = File.new("movies.csv", 'a+')
         f.puts(response)
-        f.close
-      
-    end
+        f.close   
+    ends
       @awards = @movie["Awards"]
       @director = "Director: #{@movie["Director"]}"
       @movie_title = @movie["Title"]
@@ -53,8 +52,7 @@ get '/titles/:title' do
       @plot = @movie["Plot"]
       @poster = @movie['Poster'] 
       @released = "was released on #{@movie['Released']}."
-      @writer = "Writers: #{@movie["Writer"]}"
-    
+      @writer = "Writers: #{@movie["Writer"]}"   
   
   erb :titles
 end
